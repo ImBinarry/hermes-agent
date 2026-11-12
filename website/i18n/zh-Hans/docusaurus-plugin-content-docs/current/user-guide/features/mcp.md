@@ -64,11 +64,18 @@ Stdio 服务器作为本地子进程运行，通过 stdin/stdout 通信。
 ```yaml
 mcp_servers:
   github:
-    command: "npx"
-    args: ["-y", "@modelcontextprotocol/server-github"]
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"]
     env:
       GITHUB_PERSONAL_ACCESS_TOKEN: "***"
 ```
+
+:::note
+本页的 GitHub 示例使用 GitHub 官方 MCP 服务器 `github/github-mcp-server`：本地 stdio 示例使用
+`ghcr.io/github/github-mcp-server` Docker 镜像，也可以使用托管端点
+`https://api.githubcopilot.com/mcp/`（在 `Authorization` 头中携带 PAT）。这些示例过去引用的社区 npm
+服务器已归档且无人维护。
+:::
 
 适合使用 stdio 服务器的场景：
 - 服务器已在本地安装
@@ -214,12 +221,12 @@ mcp_servers:
 ```yaml
 mcp_servers:
   github:
-    command: "npx"
-    args: ["-y", "@modelcontextprotocol/server-github"]
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"]
     env:
       GITHUB_PERSONAL_ACCESS_TOKEN: "***"
     tools:
-      include: [create_issue, list_issues]
+      include: [issue_write, list_issues]
 ```
 
 只有列出的 MCP 服务器工具会被注册。
@@ -270,12 +277,12 @@ mcp_servers:
 ```yaml
 mcp_servers:
   github:
-    command: "npx"
-    args: ["-y", "@modelcontextprotocol/server-github"]
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"]
     env:
       GITHUB_PERSONAL_ACCESS_TOKEN: "***"
     tools:
-      include: [create_issue, list_issues, search_code]
+      include: [issue_write, list_issues, search_code]
       prompts: false
 
   stripe:
@@ -353,12 +360,12 @@ mcp-<server>
 ```yaml
 mcp_servers:
   github:
-    command: "npx"
-    args: ["-y", "@modelcontextprotocol/server-github"]
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"]
     env:
       GITHUB_PERSONAL_ACCESS_TOKEN: "***"
     tools:
-      include: [list_issues, create_issue, update_issue]
+      include: [list_issues, issue_write]
       prompts: false
       resources: false
 ```

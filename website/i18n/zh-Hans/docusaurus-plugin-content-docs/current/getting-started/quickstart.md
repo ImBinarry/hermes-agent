@@ -277,8 +277,8 @@ hermes skills install openai/skills/k8s
 # 添加到 ~/.hermes/config.yaml
 mcp_servers:
   github:
-    command: npx
-    args: ["-y", "@modelcontextprotocol/server-github"]
+    command: docker
+    args: ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"]
     env:
       GITHUB_PERSONAL_ACCESS_TOKEN: "ghp_xxx"
 ```

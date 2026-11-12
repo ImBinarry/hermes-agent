@@ -18,6 +18,9 @@ For ad-hoc, one-off MCP tool calls from the terminal without configuring anythin
 - **MCP Python dependencies** — included in the standard PM install through the `all` extra. Use PM to add the `mcp` extra.
 - **Node.js** -- required for `npx`-based MCP servers (most community servers)
 - **uv** -- required for `uvx`-based MCP servers (Python-based servers)
+- **Docker** -- required for the GitHub example below, which runs GitHub's official MCP server
+  from `ghcr.io/github/github-mcp-server`; the same server is available as a hosted endpoint
+  (`https://api.githubcopilot.com/mcp/`) if you would rather not run a container
 
 Install the MCP SDK:
 
@@ -171,8 +174,8 @@ All other environment variables (API keys, tokens, secrets) are excluded unless 
 ```yaml
 mcp_servers:
   github:
-    command: "npx"
-    args: ["-y", "@modelcontextprotocol/server-github"]
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"]
     env:
       # Only this token is passed to the subprocess
       GITHUB_PERSONAL_ACCESS_TOKEN: "ghp_..."
@@ -261,8 +264,8 @@ Registers tools like `mcp_filesystem_read_file`, `mcp_filesystem_write_file`, `m
 ```yaml
 mcp_servers:
   github:
-    command: "npx"
-    args: ["-y", "@modelcontextprotocol/server-github"]
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"]
     env:
       GITHUB_PERSONAL_ACCESS_TOKEN: "ghp_xxxxxxxxxxxxxxxxxxxx"
     timeout: 60
@@ -296,8 +299,8 @@ mcp_servers:
     args: ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/allowed/dir"]
 
   github:
-    command: "npx"
-    args: ["-y", "@modelcontextprotocol/server-github"]
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"]
     env:
       GITHUB_PERSONAL_ACCESS_TOKEN: "ghp_xxxxxxxxxxxxxxxxxxxx"
 

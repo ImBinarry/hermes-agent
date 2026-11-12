@@ -122,8 +122,10 @@ hermes tools                            # curses UI to enable/disable per platfo
 # config.yaml
 mcp_servers:
   github:
-    command: npx
-    args: ["-y", "@modelcontextprotocol/server-github"]
+    command: docker
+    args: ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"]
+    env:
+      GITHUB_PERSONAL_ACCESS_TOKEN: "${GITHUB_TOKEN}"
 ```
 
 这将创建一个 `mcp-github` 工具集，可在 `--toolsets` 或平台配置中引用。

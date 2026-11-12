@@ -158,15 +158,17 @@ mcp_servers:
 ```yaml
 mcp_servers:
   github:
-    command: "npx"
-    args: ["-y", "@modelcontextprotocol/server-github"]
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"]
     env:
       GITHUB_PERSONAL_ACCESS_TOKEN: "***"
     tools:
-      include: [list_issues, create_issue, update_issue, search_code]
+      include: [list_issues, search_code]
       resources: false
       prompts: false
 ```
+
+该白名单为只读；如需 Hermes 创建或更新 issue，请添加 `issue_write`。
 
 ### Stripe 黑名单
 

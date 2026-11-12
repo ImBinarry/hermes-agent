@@ -49,7 +49,8 @@ cd ~/.hermes/hermes-agent
 python -c "import pm; pm.sync_venv(['mcp'], explicit=True)"
 ```
 
-对于基于 npm 的服务器，请确保 Node.js 和 `npx` 可用。
+对于基于 npm 的服务器，请确保 Node.js 和 `npx` 可用。本指南后文的 GitHub 示例通过 Docker 运行
+GitHub 官方 MCP 服务器，因此还需要安装 Docker，或使用第四步中说明的托管端点。
 
 对于许多 Python MCP 服务器，`uvx` 是一个不错的默认选择。
 
@@ -99,18 +100,26 @@ Tell me which MCP-backed tools are available right now.
 
 ### 示例：仅白名单你需要的内容
 
+:::note GitHub 官方 MCP 服务器
+本页的 GitHub 示例使用 GitHub 官方 MCP 服务器 `github/github-mcp-server`，通过
+`ghcr.io/github/github-mcp-server` Docker 镜像运行（也可以使用托管端点
+`https://api.githubcopilot.com/mcp/` 并携带 PAT）。这些示例过去引用的社区 npm 服务器已归档且无人维护，
+请勿安装。
+:::
+
 ```yaml
 mcp_servers:
   github:
-    command: "npx"
-    args: ["-y", "@modelcontextprotocol/server-github"]
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"]
     env:
       GITHUB_PERSONAL_ACCESS_TOKEN: "***"
     tools:
-      include: [list_issues, create_issue, search_code]
+      include: [list_issues, search_code]
 ```
 
-对于敏感系统，这通常是最佳默认设置。
+该白名单只能读取和列出 issue，对于敏感系统通常是最佳默认设置；需要 Hermes 创建或更新
+issue 时再添加 `issue_write`。
 
 ## WSL2：将 WSL 中的 Hermes 桥接到 Windows Chrome {#wsl2-bridge-hermes-in-wsl-to-windows-chrome}
 
@@ -272,12 +281,12 @@ Check the local git state and summarize what changed recently.
 ```yaml
 mcp_servers:
   github:
-    command: "npx"
-    args: ["-y", "@modelcontextprotocol/server-github"]
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"]
     env:
       GITHUB_PERSONAL_ACCESS_TOKEN: "***"
     tools:
-      include: [list_issues, create_issue, update_issue, search_code]
+      include: [list_issues, issue_write, search_code]
       prompts: false
       resources: false
 ```
@@ -346,12 +355,12 @@ List prompts exposed by the docs server and tell me which ones would help with i
 ```yaml
 mcp_servers:
   github:
-    command: "npx"
-    args: ["-y", "@modelcontextprotocol/server-github"]
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"]
     env:
       GITHUB_PERSONAL_ACCESS_TOKEN: "***"
     tools:
-      include: [list_issues, create_issue, search_code]
+      include: [list_issues, search_code]
       prompts: false
       resources: false
 ```
@@ -364,11 +373,11 @@ Search the codebase for references to MCP and summarize the main integration poi
 
 ### 阶段 2：仅在需要时扩展
 
-如果之后还需要更新 issue：
+如果之后还需要创建或更新 issue：
 
 ```yaml
 tools:
-  include: [list_issues, create_issue, update_issue, search_code]
+  include: [list_issues, issue_write, search_code]
 ```
 
 然后重新加载：
@@ -382,12 +391,12 @@ tools:
 ```yaml
 mcp_servers:
   github:
-    command: "npx"
-    args: ["-y", "@modelcontextprotocol/server-github"]
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"]
     env:
       GITHUB_PERSONAL_ACCESS_TOKEN: "***"
     tools:
-      include: [list_issues, create_issue, update_issue, search_code]
+      include: [list_issues, issue_write, search_code]
       prompts: false
       resources: false
 

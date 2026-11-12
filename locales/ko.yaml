@@ -3645,7 +3645,7 @@ tips:
   t068: "hermes skills check는 설치된 허브 스킬의 업스트림 업데이트를 검사해요."
   t069: "hermes skills tap add myorg/skills-repo는 사용자 지정 GitHub 스킬 소스를 추가해요."
   t070: "hermes skills snapshot export setup.json은 백업이나 공유를 위해 스킬 설정을 내보내요."
-  t071: "hermes mcp add github --command npx는 명령줄에서 MCP 서버를 추가해요."
+  t071: "hermes mcp add는 명령줄에서 MCP 서버를 추가해요."
   t072: "hermes mcp-serve는 Hermes 자체를 다른 에이전트를 위한 MCP 서버로 실행해요."
   t073: "hermes auth add로 자격 증명 풀 순환을 위한 API 키를 여러 개 추가할 수 있어요."
   t074: "hermes completion bash >> ~/.bashrc는 모든 명령과 프로필에 대한 탭 자동 완성을 활성화해요."

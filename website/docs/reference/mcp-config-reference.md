@@ -81,8 +81,8 @@ String values anywhere in a server entry (`env`, `headers`, `args`, `url`, …) 
 ```yaml
 mcp_servers:
   github:
-    command: "npx"
-    args: ["-y", "@modelcontextprotocol/server-github"]
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"]
     env:
       GITHUB_PERSONAL_ACCESS_TOKEN: "${env:GITHUB_TOKEN}"   # same as "${GITHUB_TOKEN}"
 ```
@@ -223,15 +223,17 @@ If filtering removes all server-native tools and no utility tools are registered
 ```yaml
 mcp_servers:
   github:
-    command: "npx"
-    args: ["-y", "@modelcontextprotocol/server-github"]
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"]
     env:
       GITHUB_PERSONAL_ACCESS_TOKEN: "***"
     tools:
-      include: [list_issues, create_issue, update_issue, search_code]
+      include: [list_issues, search_code]
       resources: false
       prompts: false
 ```
+
+The allowlist is read-only; add `issue_write` when Hermes should create or update issues.
 
 ### Stripe blacklist
 
@@ -308,7 +310,7 @@ mcp__<server>__<tool>
 ```
 
 Examples:
-- `mcp__github__create_issue`
+- `mcp__github__issue_write`
 - `mcp__filesystem__read_file`
 - `mcp__my_api__query_data`
 

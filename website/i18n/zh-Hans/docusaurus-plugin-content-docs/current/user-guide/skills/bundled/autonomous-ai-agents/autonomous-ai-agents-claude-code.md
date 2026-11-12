@@ -658,7 +658,7 @@ Claude 可以编排多个 agent："Use @db-expert to optimize queries, then @sec
 
 ```
 # GitHub 集成
-terminal(command="claude mcp add -s user github -- npx @modelcontextprotocol/server-github", timeout=30)
+terminal(command="claude mcp add -s user github -e GITHUB_PERSONAL_ACCESS_TOKEN=$GITHUB_PAT -- docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN ghcr.io/github/github-mcp-server", timeout=30)
 
 # PostgreSQL 查询
 terminal(command="claude mcp add -s local postgres -- npx @anthropic-ai/server-postgres --connection-string postgresql://localhost/mydb", timeout=30)

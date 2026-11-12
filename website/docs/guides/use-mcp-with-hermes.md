@@ -50,7 +50,9 @@ cd ~/.hermes/hermes-agent
 python -c "import pm; pm.sync_venv(['mcp'], explicit=True)"
 ```
 
-For npm-based servers, make sure Node.js and `npx` are available.
+For npm-based servers, make sure Node.js and `npx` are available. The GitHub examples later in
+this guide run GitHub's official MCP server from Docker, so install Docker too, or use the hosted
+endpoint noted in Step 4.
 
 For many Python MCP servers, `uvx` is a nice default.
 
@@ -105,18 +107,26 @@ Do not wait until later if the server exposes a lot of tools.
 
 ### Example: whitelist only what you want
 
+:::note GitHub's official MCP server
+The GitHub examples on this page use GitHub's official MCP server, `github/github-mcp-server`,
+through its `ghcr.io/github/github-mcp-server` Docker image (or the hosted endpoint
+`https://api.githubcopilot.com/mcp/` with a PAT). The archived community npm server these examples
+used to reference is unmaintained; do not install it.
+:::
+
 ```yaml
 mcp_servers:
   github:
-    command: "npx"
-    args: ["-y", "@modelcontextprotocol/server-github"]
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"]
     env:
       GITHUB_PERSONAL_ACCESS_TOKEN: "***"
     tools:
-      include: [list_issues, create_issue, search_code]
+      include: [list_issues, search_code]
 ```
 
-This is usually the best default for sensitive systems.
+This allowlist only reads and lists issues, which is usually the best default for sensitive
+systems. Add `issue_write` when Hermes should create or update issues.
 
 ## WSL2: bridge Hermes in WSL to Windows Chrome
 
@@ -329,12 +339,12 @@ Boundary notes:
 ```yaml
 mcp_servers:
   github:
-    command: "npx"
-    args: ["-y", "@modelcontextprotocol/server-github"]
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"]
     env:
       GITHUB_PERSONAL_ACCESS_TOKEN: "***"
     tools:
-      include: [list_issues, create_issue, update_issue, search_code]
+      include: [list_issues, issue_write, search_code]
       prompts: false
       resources: false
 ```
@@ -403,12 +413,12 @@ Here is a practical progression.
 ```yaml
 mcp_servers:
   github:
-    command: "npx"
-    args: ["-y", "@modelcontextprotocol/server-github"]
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"]
     env:
       GITHUB_PERSONAL_ACCESS_TOKEN: "***"
     tools:
-      include: [list_issues, create_issue, search_code]
+      include: [list_issues, search_code]
       prompts: false
       resources: false
 ```
@@ -421,11 +431,11 @@ Search the codebase for references to MCP and summarize the main integration poi
 
 ### Phase 2: expand only when needed
 
-If you later need issue updates too:
+If you later need to create or update issues too:
 
 ```yaml
 tools:
-  include: [list_issues, create_issue, update_issue, search_code]
+  include: [list_issues, issue_write, search_code]
 ```
 
 Then reload:
@@ -439,12 +449,12 @@ Then reload:
 ```yaml
 mcp_servers:
   github:
-    command: "npx"
-    args: ["-y", "@modelcontextprotocol/server-github"]
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"]
     env:
       GITHUB_PERSONAL_ACCESS_TOKEN: "***"
     tools:
-      include: [list_issues, create_issue, update_issue, search_code]
+      include: [list_issues, issue_write, search_code]
       prompts: false
       resources: false
 
